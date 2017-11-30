@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx
+  kong-database:
+    image: postgres:9.4
+    environment:
+      - POSTGRES_USER=kong
+      - POSTGRES_DB=kong
+  kong-migration:
+    image: kong
+    depends_on:
+      - kong-database
+    environment:
+      - KONG_DATABASE=postgres
+      - KONG_PG_HOST=kong-database
+    command: kong migrations up
+  kong:
+    image: kong
+    depends_on:
+      - kong-migration
+    environment:
+      - KONG_DATABASE=postgres
+      - KONG_PG_HOST=kong-database
+    ports:
+      - 8000:8000
+      - 8001:8001
