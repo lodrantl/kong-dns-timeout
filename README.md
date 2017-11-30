@@ -25,8 +25,7 @@ curl -v http://localhost:8001/test
 
 Proof it is a problem of DNS resolution
 ```
-docker-compose exec kong bash
-ping nginx
+docker-compose exec kong ping nginx
 # write down the ip adress and create another client
 curl -i -X POST \
   --url http://localhost:8001/apis/ \
